@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Containment Wall Solutions — Redesign Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#14342A;
+    --pine:#1F5C43;
+    --pine-light:#2C7455;
+    --amber:#F0A93A;
+    --amber-dark:#D8901F;
+    --paper:#F7F6F1;
+    --paper-dim:#EFEDE4;
+    --ink:#14171 A;
+    --ink:#161A15;
+    --concrete:#767C6F;
+    --line:#DEDCCF;
+    --white:#FFFFFF;
+    --radius:2px;
+    --maxw:1180px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    line-height:1.08;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  p{ margin:0; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ margin:0; padding:0; list-style:none; }
+  img,svg{ display:block; max-width:100%; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  @media(max-width:640px){
+    .wrap{ padding:0 20px; }
+  }
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:15px 28px;
+    font-weight:600;
+    font-size:15px;
+    border-radius:var(--radius);
+    border:1.5px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .btn:focus-visible{ outline:3px solid var(--pine-light); outline-offset:2px; }
+  .btn-amber{
+    background:var(--amber);
+    color:var(--forest);
+  }
+  .btn-amber:hover{ background:var(--amber-dark); transform:translateY(-1px); }
+  .btn-ghost{
+    border-color:rgba(20,52,42,0.25);
+    color:var(--forest);
+    background:transparent;
+  }
+  .btn-ghost:hover{ border-color:var(--forest); background:rgba(20,52,42,0.04); }
+  .btn-ghost-light{
+    border-color:rgba(255,255,255,0.35);
+    color:var(--white);
+  }
+  .btn-ghost-light:hover{ border-color:#fff; background:rgba(255,255,255,0.08); }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(247,246,241,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:17px;
+    color:var(--forest);
+  }
+  .logo-mark{
+    width:34px; height:34px;
+    border:2px solid var(--forest);
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo-mark::before, .logo-mark::after{
+    content:"";
+    position:absolute;
+    background:var(--amber);
+  }
+  .logo-mark::before{ width:14px; height:2px; }
+  .logo-mark::after{ width:2px; height:14px; }
+  .logo small{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:9.5px;
+    letter-spacing:0.08em;
+    color:var(--concrete);
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+  .nav-links{
+    display:flex; align-items:center; gap:34px;
+  }
+  .nav-links a{
+    font-size:14.5px; font-weight:500; color:var(--forest);
+    position:relative;
+    padding:4px 0;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; height:2px; width:0;
+    background:var(--amber); transition:width .2s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{ display:flex; align-items:center; gap:18px; }
+  .nav-phone{
+    font-size:13.5px; font-weight:600; color:var(--forest); display:flex; align-items:center; gap:6px;
+  }
+  .burger{
+    display:none; background:none; border:none; padding:8px;
+  }
+  .burger span{
+    display:block; width:22px; height:2px; background:var(--forest); margin:5px 0; transition:.2s;
+  }
+
+  @media(max-width:900px){
+    .nav-links, .nav-phone{ display:none; }
+    .burger{ display:block; }
+  }
+
+  .mobile-menu{
+    display:none;
+    flex-direction:column;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:8px 20px 20px;
+  }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{
+    padding:14px 0; border-bottom:1px solid var(--line); font-weight:500; font-size:15px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:76px 0 90px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:64px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-size:11.5px; font-weight:600; color:var(--pine);
+    display:inline-flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:""; width:8px; height:8px; background:var(--amber); display:inline-block;
+  }
+  .hero h1{
+    font-size:clamp(34px, 4.4vw, 54px);
+    color:var(--forest);
+    max-width:640px;
+  }
+  .hero h1 em{ font-style:normal; color:var(--pine); }
+  .hero-sub{
+    margin-top:22px;
+    font-size:17px;
+    color:#3B4239;
+    max-width:520px;
+  }
+  .hero-ctas{
+    margin-top:34px;
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .hero-note{
+    margin-top:22px;
+    font-size:13px;
+    color:var(--concrete);
+    display:flex; align-items:center; gap:8px;
+  }
+  .hero-note svg{ flex-shrink:0; }
+
+  .frame{
+    position:relative;
+    border:1px solid var(--line);
+  }
+  .frame::before,.frame::after,
+  .frame .cB, .frame .cB2{
+    content:""; position:absolute; width:22px; height:22px;
+    border:2px solid var(--forest);
+  }
+  .frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  .hero-photo{
+    position:relative;
+    aspect-ratio:4/4.6;
+    background:
+      linear-gradient(160deg, #DCE3DA, #C7D0C4 55%, #B7C0B2);
+    overflow:hidden;
+  }
+  .hero-photo::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(20,52,42,0.08) 0 2px, transparent 2px 64px),
+      repeating-linear-gradient(0deg, rgba(20,52,42,0.08) 0 2px, transparent 2px 64px);
+  }
+  .hero-photo-label{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    color:rgba(20,52,42,0.55);
+    font-size:12px;
+    padding:20px;
+  }
+  .tag{
+    position:absolute;
+    background:var(--forest);
+    color:var(--white);
+    font-size:10.5px;
+    font-weight:600;
+    padding:9px 12px;
+    display:flex; align-items:center; gap:8px;
+    box-shadow:0 8px 20px rgba(20,52,42,0.25);
+  }
+  .tag::before{ content:""; width:6px; height:6px; background:var(--amber); flex-shrink:0; }
+  .tag-1{ top:20px; left:-20px; }
+  .tag-2{ bottom:26px; right:-18px; background:var(--amber); color:var(--forest); }
+  .tag-2::before{ background:var(--forest); }
+
+  @media(max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; gap:48px; }
+    .tag-1, .tag-2{ position:static; margin-top:12px; display:inline-flex; }
+  }
+
+  /* ---------- TRUST STRIP ---------- */
+  .trust{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:26px 0;
+    background:var(--paper-dim);
+  }
+  .trust-row{
+    display:flex; align-items:center; gap:28px; flex-wrap:wrap;
+    justify-content:space-between;
+  }
+  .trust-label{
+    font-size:13px; color:var(--concrete); max-width:220px; line-height:1.4;
+  }
+  .trust-chips{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .chip{
+    font-size:11px; font-weight:600; padding:8px 14px;
+    border:1px solid var(--line); color:var(--forest); background:var(--white);
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{ padding:100px 0; }
+  .section-tight{ padding:80px 0; }
+  .section-head{
+    max-width:640px; margin-bottom:56px;
+  }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  .section-head h2{
+    font-size:clamp(28px,3.2vw,38px);
+    color:var(--forest);
+  }
+  .section-head p{
+    margin-top:16px; font-size:16px; color:#3B4239;
+  }
+
+  /* ---------- INDUSTRIES ---------- */
+  .industry-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+  }
+  @media(max-width:1000px){ .industry-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:560px){ .industry-grid{ grid-template-columns:1fr; } }
+
+  .industry-card{ background:var(--white); border:1px solid var(--line); }
+  .industry-photo{
+    aspect-ratio:1/0.82;
+    position:relative;
+    overflow:hidden;
+  }
+  .industry-photo .tag{ top:12px; left:12px; font-size:9.5px; padding:7px 10px; }
+  .ip-1{ background:linear-gradient(150deg,#D7E3DC,#A9BEAE); }
+  .ip-2{ background:linear-gradient(150deg,#DDE3D3,#B7C4A4); }
+  .ip-3{ background:linear-gradient(150deg,#D3DEE3,#A3B9C3); }
+  .ip-4{ background:linear-gradient(150deg,#E3DBCF,#C4B199); }
+  .industry-photo::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(45deg, rgba(20,52,42,0.06) 0 2px, transparent 2px 22px);
+  }
+  .industry-body{ padding:22px; }
+  .industry-body h3{ font-size:18px; color:var(--forest); margin-bottom:8px; }
+  .industry-body p{ font-size:14px; color:#4A5148; margin-bottom:14px; }
+  .industry-link{ font-size:13px; font-weight:600; color:var(--pine); display:inline-flex; gap:6px; align-items:center; }
+  .industry-link svg{ transition:transform .15s ease; }
+  .industry-card:hover .industry-link svg{ transform:translateX(3px); }
+
+  /* ---------- WHY (dark band) ---------- */
+  .why{
+    background:var(--forest);
+    color:var(--white);
+    padding:100px 0;
+  }
+  .why .section-head h2{ color:var(--white); }
+  .why .section-head p{ color:rgba(255,255,255,0.72); }
+  .why .eyebrow{ color:var(--amber); }
+  .why .eyebrow::before{ background:var(--amber); }
+
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.14);
+  }
+  @media(max-width:800px){ .why-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:520px){ .why-grid{ grid-template-columns:1fr; } }
+
+  .why-item{
+    background:var(--forest);
+    padding:32px 26px;
+  }
+  .why-item svg{ color:var(--amber); margin-bottom:18px; }
+  .why-item h3{ font-size:16px; font-weight:600; margin-bottom:8px; }
+  .why-item p{ font-size:13.5px; color:rgba(255,255,255,0.68); }
+
+  /* ---------- PROCESS ---------- */
+  .process-list{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    border-top:1px solid var(--line);
+  }
+  @media(max-width:900px){ .process-list{ grid-template-columns:1fr; } }
+  .process-item{
+    padding:34px 26px 34px 0;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .process-list .process-item:not(:last-child){ border-right:1px solid var(--line); }
+  @media(max-width:900px){ .process-list .process-item{ border-right:none !important; padding-right:0; } }
+  .process-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; font-weight:600; color:var(--amber-dark);
+    margin-bottom:20px;
+  }
+  .process-item h3{ font-size:17px; color:var(--forest); margin-bottom:10px; }
+  .process-item p{ font-size:14px; color:#4A5148; }
+
+  /* ---------- ABOUT / FOUNDER ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:0.75fr 1.25fr;
+    gap:60px;
+    align-items:center;
+  }
+  @media(max-width:800px){ .about-grid{ grid-template-columns:1fr; } }
+  .about-photo{
+    aspect-ratio:3/3.6;
+    background:linear-gradient(160deg,#E4E1D6,#C9C6B7);
+    position:relative;
+    overflow:hidden;
+  }
+  .about-quote{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(20px,2.4vw,26px);
+    color:var(--forest);
+    max-width:560px;
+    margin-bottom:24px;
+  }
+  .about-name{ font-weight:700; font-size:15px; color:var(--forest); }
+  .about-role{ font-size:13px; color:var(--concrete); margin-top:2px; }
+  .about-stats{
+    display:flex; gap:36px; margin-top:32px; flex-wrap:wrap;
+  }
+  .about-stat b{
+    display:block; font-family:'Space Grotesk',sans-serif; font-size:26px; color:var(--pine);
+  }
+  .about-stat span{ font-size:12.5px; color:var(--concrete); }
+  .placeholder-note{
+    margin-top:26px; font-size:12px; color:var(--concrete); font-style:italic;
+    border-left:2px solid var(--amber); padding-left:12px;
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .cta-band{
+    background:var(--pine);
+    background-image:linear-gradient(135deg, var(--pine), var(--forest));
+    color:var(--white);
+    padding:70px 0;
+  }
+  .cta-row{
+    display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap;
+  }
+  .cta-row h2{ font-size:clamp(24px,3vw,32px); max-width:520px; color:var(--white); }
+  .cta-row p{ margin-top:10px; color:rgba(255,255,255,0.75); font-size:14.5px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:#0F241C; color:rgba(255,255,255,0.72); padding:70px 0 30px; }
+  .foot-grid{
+    display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px;
+    padding-bottom:44px; border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  @media(max-width:800px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:480px){ .foot-grid{ grid-template-columns:1fr; } }
+  .foot-grid h4{
+    color:var(--white); font-size:13px; font-weight:600; margin-bottom:18px;
+    text-transform:uppercase; letter-spacing:0.06em; font-family:'IBM Plex Mono',monospace;
+  }
+  .foot-grid li{ margin-bottom:11px; font-size:14px; }
+  .foot-grid a:hover{ color:var(--amber); }
+  .foot-logo{ color:var(--white); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; margin-bottom:14px; display:flex; gap:10px; align-items:center; }
+  .foot-tag{ font-size:13.5px; max-width:280px; color:rgba(255,255,255,0.55); }
+  .foot-bottom{
+    display:flex; justify-content:space-between; padding-top:26px; font-size:12.5px; color:rgba(255,255,255,0.45);
+    flex-wrap:wrap; gap:10px;
+  }
+
+  /* ---------- REVEAL ---------- */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+
+  .mockup-banner{
+    background:#1A1D1A; color:#fff; text-align:center; font-size:12.5px;
+    padding:9px 14px; font-family:'IBM Plex Mono',monospace; letter-spacing:0.04em;
+  }
+  .mockup-banner b{ color:var(--amber); }
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  .scroll-progress {
+    position: absolute; bottom: -1px; left: 0; height: 2px;
+    background: var(--amber); width: 0%; z-index: 101;
+    transition: width 0.1s ease-out;
+  }
+
+  /* ---------- MARQUEE ---------- */
+  .marquee-section {
+    padding: 32px 0;
+  }
+  .marquee-wrapper {
+    overflow: hidden; white-space: nowrap;
+    display: flex; align-items: center;
+    max-width: 1000px; margin: 0 auto;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  }
+  .marquee-content {
+    display: inline-flex; align-items: center; gap: 60px; padding-right: 60px;
+    animation: scroll-left 25s linear infinite;
+  }
+  @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .logo-placeholder { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #9AA096; font-size: 18px; letter-spacing: -0.02em; display:flex; align-items:center; gap:8px;}
+  .logo-placeholder svg { width: 24px; height: 24px; }
+  
+  /* ---------- QUOTE MODAL ---------- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(20,52,42,0.8); backdrop-filter: blur(6px);
+    z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.active { display: flex; opacity: 1; }
+  .modal-container {
+    background: var(--white); width: 100%; max-width: 600px;
+    border-radius: var(--radius); position: relative; overflow: hidden;
+    transform: translateY(20px); transition: transform 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+  .modal-overlay.active .modal-container { transform: translateY(0); }
+  .modal-header { padding: 24px 32px; background: var(--forest); color: var(--white); display: flex; justify-content: space-between; align-items: center; }
+  .modal-header h3 { font-size: 20px; }
+  .modal-close { background: none; border: none; color: var(--white); font-size: 24px; cursor: pointer; padding: 0; line-height: 1; }
+  .modal-body { padding: 32px; }
+  .modal-progress { display: flex; gap: 8px; margin-bottom: 24px; }
+  .progress-step { flex: 1; height: 4px; background: var(--line); border-radius: 2px; transition: background 0.3s; }
+  .progress-step.active { background: var(--amber); }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 13.5px; font-weight: 600; color: var(--forest); margin-bottom: 8px; }
+  .form-control { width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); font-family: inherit; font-size: 15px; outline: none; transition: border-color 0.2s; }
+  .form-control:focus { border-color: var(--pine); box-shadow: 0 0 0 3px rgba(31,92,67,0.1); }
+  .modal-footer { padding-top: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); margin-top: 24px;}
+  .step-content { display: none; }
+  .step-content.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .quote-trust { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--concrete); margin-top:16px;}
+  
+  /* ---------- INDUSTRY TABS ---------- */
+  .tabs-nav { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap;}
+  .tab-btn { background: transparent; border: 1px solid var(--line); padding: 10px 20px; font-weight: 600; font-size: 14px; color: var(--concrete); border-radius: 30px; transition: 0.2s; cursor: pointer;}
+  .tab-btn.active { background: var(--forest); color: var(--white); border-color: var(--forest); }
+  .tab-btn:hover:not(.active) { border-color: var(--pine); color: var(--pine); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; animation: fadeIn 0.5s ease; }
+  .industry-tab-content { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  @media(max-width:800px) { .industry-tab-content { grid-template-columns: 1fr; gap:32px; } }
+  .industry-tab-image { position: relative; aspect-ratio: 4/3; overflow: hidden; border: 1px solid var(--line); }
+  .industry-tab-image img { width: 100%; height: 100%; object-fit: cover; }
+  .industry-tab-image .tag { top: 20px; left: 20px; }
+  .industry-tab-text h3 { font-size: 28px; margin-bottom: 16px; color: var(--forest); }
+  .industry-tab-text p { font-size: 16px; color: #4A5148; margin-bottom: 24px; line-height: 1.6; }
+  .industry-tab-list { margin-bottom: 32px; }
+  .industry-tab-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 15px; color: var(--forest); }
+  .industry-tab-list li svg { flex-shrink: 0; color: var(--amber-dark); margin-top: 2px;}
+
+  /* ---------- PROCESS TIMELINE ---------- */
+  .process-timeline { position: relative; margin-top: 40px; padding-left: 32px; }
+  .process-timeline::before { content:""; position: absolute; left: 6px; top: 12px; bottom: 24px; width: 3px; background: var(--line); border-radius: 3px;}
+  .timeline-item { position: relative; padding-bottom: 48px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot { position: absolute; left: -32px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--amber); z-index: 2; transition: 0.3s; }
+  .timeline-item:hover .timeline-dot { background: var(--amber); box-shadow: 0 0 0 4px rgba(240, 169, 58, 0.2); }
+  .timeline-content { padding-left: 24px; }
+  .timeline-content h3 { font-size: 20px; color: var(--forest); margin-bottom: 10px; display:flex; align-items:center; gap:12px; }
+  .timeline-content h3 span { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--concrete); font-weight: 500; }
+  .timeline-content p { font-size: 15px; color: #4A5148; line-height: 1.6; max-width: 600px;}
+  
+  /* Parallax and Hover extras */
+  .hero-photo { background-attachment: fixed; background-size: cover; background-position: center; } /* Simple parallax */
+  .btn-amber:hover { box-shadow: 0 4px 12px rgba(240, 169, 58, 0.3); }
+
+
+  /* ---------- WHATSAPP FLOATING BUTTON ---------- */
+  .whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    z-index: 999;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .whatsapp-float:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+  }
+  .whatsapp-float svg {
+    width: 34px;
+    height: 34px;
+  }
+  
+  @media(max-width: 640px){
+    .whatsapp-float { bottom: 20px; right: 20px; width: 54px; height: 54px; }
+    .whatsapp-float svg { width: 28px; height: 28px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">ROUGH CONCEPT MOCKUP — not the live site &nbsp;·&nbsp; <b>placeholder photos &amp; stats shown in dashed frames</b></div>
+
+
+<nav class="nav">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="wrap nav-row">
+
+    <a href="#" class="logo">
+      <span class="logo-mark"></span>
+      <span>CONTAINMENT WALL<br><small>Solutions · Northeast US</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#industries">Industries</a>
+      <a href="#why">Why CWS</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="nav-cta">
+      <span class="nav-phone">☎ (617) 922-3421</span>
+      <a href="#quote" class="btn btn-amber open-quote-modal">Request a Quote</a>
+    </div>
+    <button class="burger" id="burgerBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#industries">Industries</a>
+    <a href="#why">Why CWS</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#quote" class="btn btn-amber open-quote-modal" style="margin-top:14px; justify-content:center;">Request a Quote</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow mono">Temporary Containment · MA · RI · CT · NH · ME · VT · NY</div>
+      <h1>Keep the facility running. Keep the <em>dust, noise, and debris</em> contained.</h1>
+      <p class="hero-sub">Modular wall systems for hospitals, laboratories, data centers, and active job sites — installed in hours, fully code-compliant, and removed without a trace.</p>
+      <div class="hero-ctas">
+        <a href="#quote" class="btn btn-amber open-quote-modal">Request a Quote →</a>
+        <a href="#process" class="btn btn-ghost">See how installation works</a>
+      </div>
+      <div class="hero-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        Most quote requests answered within one business day
+      </div>
+    </div>
+    <div class="frame">
+      <div class="hero-photo" style="background-image: url('https://temporarywalls.com/wp-content/uploads/2025/05/Pic-STARC-WALL.jpg'); background-size: cover; background-position: center;">
+        
+        <div class="tag tag-1">⧉ INSTALL TIME: 4–8 HRS</div>
+        <div class="tag tag-2">✓ STARC® BARRICADE COMPATIBLE</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee-section">
+<div class="marquee-wrapper">
+  <div class="marquee-content">
+    <div class="logo-placeholder" style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-1px;font-size:20px;display:flex;align-items:center;gap:6px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2z"/></svg> CATHOLIC HEALTH</div>
+    <div class="logo-placeholder" style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:1px;font-size:18px;display:flex;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/></svg> MASS GENERAL</div>
+    <div class="logo-placeholder" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:19px;display:flex;align-items:center;gap:10px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg> PFIZER LABS</div>
+    <div class="logo-placeholder" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-style:italic;font-size:22px;display:flex;align-items:center;gap:4px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="12,2 22,22 2,22"/></svg> EQUINIX DATA</div>
+    <div class="logo-placeholder" style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-1px;font-size:20px;display:flex;align-items:center;gap:6px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2z"/></svg> CATHOLIC HEALTH</div>
+    <div class="logo-placeholder" style="font-family:'Inter',sans-serif;font-weight:800;letter-spacing:1px;font-size:18px;display:flex;align-items:center;gap:8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/></svg> MASS GENERAL</div>
+    <div class="logo-placeholder" style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:19px;display:flex;align-items:center;gap:10px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg> PFIZER LABS</div>
+    <div class="logo-placeholder" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-style:italic;font-size:22px;display:flex;align-items:center;gap:4px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="12,2 22,22 2,22"/></svg> EQUINIX DATA</div>
+  </div>
+</div>
+</div>
+
+<section class="section" id="industries">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow mono">Industries we serve</div>
+      <h2>Built for your environment, not a generic jobsite</h2>
+      <p>Every facility has different containment requirements. Select your industry to see our tailored approach.</p>
+    </div>
+    
+    <div class="tabs-nav reveal">
+      <button class="tab-btn active" data-target="#tab-healthcare">Healthcare & Hospitals</button>
+      <button class="tab-btn" data-target="#tab-labs">Laboratories & Cleanrooms</button>
+      <button class="tab-btn" data-target="#tab-data">Data Centers</button>
+      <button class="tab-btn" data-target="#tab-industrial">Industrial & Commercial</button>
+    </div>
+
+    <div class="tabs-content reveal">
+      <div class="tab-pane active" id="tab-healthcare">
+        <div class="industry-tab-content">
+          <div class="industry-tab-image ip-1 frame" style="background-image: url('https://temporarywalls.com/wp-content/uploads/2025/05/Pic-STARC-WALL.jpg'); background-size: cover; background-position: center;">
+            <div class="tag">ICRA CLASS IV COMPLIANT</div>
+          </div>
+          <div class="industry-tab-text">
+            <h3>Healthcare & Hospitals</h3>
+            <p>Infection-control compliant barriers that keep patient corridors clean and quiet during renovation. We understand that hospital operations cannot pause for construction.</p>
+            <ul class="industry-tab-list">
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Exceeds ICRA Class IV requirements</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Negative air pressure integration</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Anti-microbial, easily sanitizable surfaces</li>
+            </ul>
+            <a href="#quote" class="open-quote-modal" class="btn btn-amber open-quote-modal">Request Healthcare Quote</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-pane" id="tab-labs">
+        <div class="industry-tab-content">
+          <div class="industry-tab-image ip-2 frame" style="background-image: url('https://temporarywalls.com/wp-content/uploads/2025/03/Moderna-1st-Flr-Containment-Wall-Solutions-scaled.jpg'); background-size: cover; background-position: center;">
+            <div class="tag">ZERO DUST DISPERSION</div>
+          </div>
+          <div class="industry-tab-text">
+            <h3>Laboratories & Cleanrooms</h3>
+            <p>Sealed, sound-attenuating partitions that isolate sensitive equipment and ongoing research from construction dust and vibration.</p>
+            <ul class="industry-tab-list">
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Airtight seals for positive/negative pressure</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Smooth walls prevent particle buildup</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Non-porous materials</li>
+            </ul>
+            <a href="#quote" class="open-quote-modal" class="btn btn-amber open-quote-modal">Request Lab Quote</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tab-data">
+        <div class="industry-tab-content">
+          <div class="industry-tab-image ip-3 frame" style="background-image: url('https://temporarywalls.com/wp-content/uploads/2025/03/Moderna-1st-Flr-Containment-Wall-Solutions-scaled.jpg'); background-size: cover; background-position: center;">
+            <div class="tag">CRITICAL UPTIME PROTECTED</div>
+          </div>
+          <div class="industry-tab-text">
+            <h3>Data Centers</h3>
+            <p>Dust-sealed enclosures around live server rooms, built to protect critical uptime and hardware integrity during facility expansion and maintenance.</p>
+            <ul class="industry-tab-list">
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Zero dust contamination for hardware</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Rapid deployment without facility shutdown</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Rigid and secure partitions</li>
+            </ul>
+            <a href="#quote" class="open-quote-modal" class="btn btn-amber open-quote-modal">Request Data Center Quote</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-pane" id="tab-industrial">
+        <div class="industry-tab-content">
+          <div class="industry-tab-image ip-4 frame" style="background-image: url('https://temporarywalls.com/wp-content/uploads/2025/05/Pic-STARC-WALL.jpg'); background-size: cover; background-position: center;">
+            <div class="tag">HEAVY DUTY DEMARKATION</div>
+          </div>
+          <div class="industry-tab-text">
+            <h3>Industrial & Commercial</h3>
+            <p>Fast-build barriers for multi-phase renovations that keep commercial operations moving smoothly around the active work zone.</p>
+            <ul class="industry-tab-list">
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Floor-to-ceiling configurations</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Built-in door and access solutions</li>
+              <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Superior durability for high-traffic zones</li>
+            </ul>
+            <a href="#quote" class="open-quote-modal" class="btn btn-amber open-quote-modal">Request Commercial Quote</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow mono">Why teams choose CWS</div>
+      <h2>Six reasons contractors call us back</h2>
+      <p>A leaner, more responsive alternative to permanent drywall containment.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item reveal">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 21h10M12 3v18M5 8l7-5 7 5"/></svg>
+        <h3>Clean</h3><p>Keeps renovation mess fully out of public and patient view.</p>
+      </div>
+      <div class="why-item reveal">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+        <h3>Safe</h3><p>Lightweight panels create no debris or dust during install.</p>
+      </div>
+      <div class="why-item reveal">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l18 18M9 9v6h4l5 5V4l-5 5H9V6"/></svg>
+        <h3>Quiet</h3><p>Sound-attenuating panels reduce noise transfer by up to 50%.</p>
+      </div>
+      <div class="why-item reveal">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h13l-4-4m4 4l-4 4M21 5v14"/></svg>
+        <h3>Fast</h3><p>Most configurations installed within a single work shift.</p>
+      </div>
+      <div class="why-item reveal">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4v6h6M20 20v-6h-6M4 10a8 8 0 0114-5M20 14a8 8 0 01-14 5"/></svg>
+        <h3>Reusable</h3><p>100% modular panels — zero landfill waste after teardown.</p>
+      </div>
+      <div class="why-item reveal">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 3M12 3a9 9 0 100 18 9 9 0 000-18z"/></svg>
+        <h3>Full-Service</h3><p>Install, relocate, and dismantle — handled start to finish.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow mono">How it works</div>
+      <h2>From first call to teardown</h2>
+      <p>A straightforward process built around your project timeline, not ours.</p>
+    </div>
+    <div class="process-timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3><span>01 /</span> We assess the space</h3>
+          <p>A quick site visit or photo review to understand layout, ICRA/code requirements, and access constraints. We identify potential hurdles before we ever set foot on site for installation.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3><span>02 /</span> You get a fixed quote</h3>
+          <p>A specific configuration and fixed price built around your exact footprint and timeline — no generic packages or surprise upcharges later.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3><span>03 /</span> Walls go up in hours</h3>
+          <p>Our experienced crew installs the system precisely on your schedule, including nights and weekends when needed to avoid disrupting daytime facility operations.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3><span>04 /</span> We dismantle, you move on</h3>
+          <p>When the project wraps, panels are quickly broken down and removed without a trace. They are 100% reusable, leaving zero landfill waste behind.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight" id="about" style="background:var(--paper-dim);">
+  <div class="wrap about-grid">
+    <div class="frame reveal">
+      <div class="about-photo" style="background-image: url('images/founder_portrait_1783230328019.png'); background-size: cover; background-position: center;">
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow mono">About containment wall solutions</div>
+      <p class="about-quote">"Our systems can contain any size project. We're specialists who understand that 1st-class service, safety, and quality workmanship come first."</p>
+      <div class="about-name">Brent Normandin</div>
+      <div class="about-role">Founder &amp; President</div>
+      <div class="about-stats">
+        <div class="about-stat"><b>6</b><span>States served</span></div>
+        <div class="about-stat"><b>100%</b><span>Reusable panel systems</span></div>
+        <div class="about-stat"><b>24/7</b><span>Response support</span></div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="quote">
+  <div class="wrap cta-row">
+    <div>
+      <h2>Ready to secure your next project?</h2>
+      <p>Tell us your timeline and site — we'll come back with a straightforward quote.</p>
+    </div>
+    <div style="display:flex; gap:14px; flex-wrap:wrap;">
+      <a href="#" class="btn btn-amber">Request a Quote →</a>
+      <a href="tel:+16179223421" class="btn btn-ghost-light">Call (617) 922-3421</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo"><span class="logo-mark" style="border-color:#fff;"></span> CONTAINMENT WALL</div>
+        <p class="foot-tag">Temporary wall rental and installation across the Northeast — we take the headache out of containment.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#industries">Industries</a></li>
+          <li><a href="#quote" class="open-quote-modal">Get a Quote</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Service Area</h4>
+        <ul>
+          <li><a href="#">Massachusetts</a></li>
+          <li><a href="#">New York</a></li>
+          <li><a href="#">Rhode Island</a></li>
+          <li><a href="#">New Hampshire</a></li>
+          <li><a href="#">Connecticut &amp; Maine</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>+1 (617) 922-3421</li>
+          <li>brent@temporarywalls.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Containment Wall Solutions</span>
+      <span>Concept mockup — final content &amp; photography to be supplied</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<div class="modal-overlay" id="quoteModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Request a Custom Quote</h3>
+      <button class="modal-close" id="closeModal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-progress">
+        <div class="progress-step active" id="step1-ind"></div>
+        <div class="progress-step" id="step2-ind"></div>
+      </div>
+      <form id="quoteForm">
+        <!-- Step 1 -->
+        <div class="step-content active" id="step1">
+          <div class="form-group">
+            <label>Project Type / Industry</label>
+            <select class="form-control" required>
+              <option value="">Select industry...</option>
+              <option value="healthcare">Healthcare / Hospital</option>
+              <option value="lab">Laboratory / Cleanroom</option>
+              <option value="data">Data Center</option>
+              <option value="commercial">Industrial / Commercial</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estimated Linear Feet of Wall Needed</label>
+            <input type="text" class="form-control" placeholder="e.g. 150 ft (Leave blank if unsure)">
+          </div>
+          <div class="form-group">
+            <label>Target Install Date</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="modal-footer">
+            <span></span>
+            <button type="button" class="btn btn-amber" id="nextStepBtn">Next Step &rarr;</button>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="step-content" id="step2">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" required placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" class="form-control" required placeholder="john@company.com">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" class="form-control" required placeholder="(555) 123-4567">
+          </div>
+          <div class="quote-trust">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Your information is secure. We respond to all requests within 1 business day.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost" id="prevStepBtn">&larr; Back</button>
+            <button type="submit" class="btn btn-amber">Submit Quote Request</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const burger = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  document.querySelectorAll('.mobile-menu a').forEach(a =>
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'))
+  );
+
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold:0.15 });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('in'));
+  }
+
+  // Scroll Progress
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('scrollProgress').style.width = scrolled + '%';
+  });
+
+  // Tabs
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanes = document.querySelectorAll('.tab-pane');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanes.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(btn.dataset.target).classList.add('active');
+    });
+  });
+
+  // Modal
+  const modal = document.getElementById('quoteModal');
+  const openBtns = document.querySelectorAll('.open-quote-modal');
+  const closeBtn = document.getElementById('closeModal');
+  const nextBtn = document.getElementById('nextStepBtn');
+  const prevBtn = document.getElementById('prevStepBtn');
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step1Ind = document.getElementById('step1-ind');
+  const step2Ind = document.getElementById('step2-ind');
+
+  openBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.add('active');
+    });
+  });
+  
+  closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal) modal.classList.remove('active');
+  });
+
+  nextBtn.addEventListener('click', () => {
+    // Basic validation check before next step could go here
+    step1.classList.remove('active');
+    step2.classList.add('active');
+    step1Ind.classList.remove('active');
+    step2Ind.classList.add('active');
+    step1Ind.style.background = 'var(--amber)'; // indicate complete
+  });
+
+  prevBtn.addEventListener('click', () => {
+    step2.classList.remove('active');
+    step1.classList.add('active');
+    step2Ind.classList.remove('active');
+    step1Ind.classList.add('active');
+    step1Ind.style.background = 'var(--amber)';
+  });
+  
+  document.getElementById('quoteForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert("Form submitted! (Mockup)");
+    modal.classList.remove('active');
+  });
+
+
+  // Lead Popup (trigger after 4 seconds)
+  const leadPopup = document.getElementById('leadPopup');
+  const closeLeadPopup = document.getElementById('closeLeadPopup');
+  let popupShown = false;
+
+  setTimeout(() => {
+    if(!popupShown && leadPopup) {
+      leadPopup.classList.add('active');
+      popupShown = true;
+    }
+  }, 4000);
+
+  if (closeLeadPopup) {
+      closeLeadPopup.addEventListener('click', () => leadPopup.classList.remove('active'));
+  }
+  if (leadPopup) {
+      leadPopup.addEventListener('click', (e) => {
+        if(e.target === leadPopup) leadPopup.classList.remove('active');
+      });
+  }
+  
+  const leadForm = document.getElementById('leadForm');
+  if (leadForm) {
+      leadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert("Thanks! We will contact you shortly with your free assessment.");
+        leadPopup.classList.remove('active');
+      });
+  }
+
+</script>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/16179223421" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor">
+    <path d="M16 2.5a13.5 13.5 0 0 0-11.4 20.72L2.5 30l7-2.05A13.5 13.5 0 1 0 16 2.5zm0 24.75a11.2 11.2 0 0 1-5.74-1.57l-.4-.24-4.24 1.25 1.13-4.14-.27-.42A11.2 11.2 0 1 1 16 27.25zm6.2-8.5c-.34-.17-2-.99-2.31-1.1s-.54-.17-.76.17-.87 1.1-.1.08-1.07.13s-.65-.17-1.46-.57c-.8-.4-1.56-1.12-2.18-1.99s-.62-1.38-.28-1.72c.16-.15.34-.4.5-.58s.22-.3.34-.5.05-.4-.03-.57-.76-1.83-1.04-2.5c-.27-.66-.54-.57-.76-.58s-.42-.01-.65-.01a1.24 1.24 0 0 0-.9.42 3.75 3.75 0 0 0-1.16 2.79 4.3 4.3 0 0 0 1.24 3.03 9.8 9.8 0 0 0 4.14 3.65 10.15 10.15 0 0 0 3.32.96 2.77 2.77 0 0 0 1.94-.48 2.5 2.5 0 0 0 1.54-1.78 2.05 2.05 0 0 0-.14-1.78c-.16-.3-.54-.48-.88-.65z"/>
+  </svg>
+</a>
+
+<!-- Lead Popup Modal -->
+<div class="modal-overlay" id="leadPopup">
+  <div class="modal-container" style="max-width: 480px; text-align: center; padding: 40px 32px; background: var(--white);">
+    <button class="modal-close" id="closeLeadPopup" style="color: var(--concrete); position: absolute; top: 16px; right: 20px; font-size: 28px;">&times;</button>
+    <div style="margin-bottom: 20px;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--pine)" stroke-width="1.5" style="margin:0 auto;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h3 style="font-size: 24px; color: var(--forest); margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif; font-weight:700;">Need a temporary wall fast?</h3>
+    <p style="font-size: 15px; color: #4A5148; margin-bottom: 24px;">Get a free, no-obligation site assessment and fixed-price quote within 24 hours.</p>
+    <form id="leadForm" style="text-align: left;">
+      <div class="form-group" style="margin-bottom:16px;">
+        <input type="email" class="form-control" required placeholder="Enter your email address">
+      </div>
+      <button type="submit" class="btn btn-amber" style="width: 100%; justify-content: center; font-size:16px;">Get My Free Quote</button>
+    </form>
+    <p style="font-size: 12px; color: var(--concrete); margin-top: 16px;">We respect your privacy and don't share data.</p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -564,17 +564,42 @@
   .industry-tab-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 15px; color: var(--forest); }
   .industry-tab-list li svg { flex-shrink: 0; color: var(--amber-dark); margin-top: 2px;}
 
-  /* ---------- PROCESS TIMELINE ---------- */
-  .process-timeline { position: relative; margin-top: 40px; padding-left: 32px; }
-  .process-timeline::before { content:""; position: absolute; left: 6px; top: 12px; bottom: 24px; width: 3px; background: var(--line); border-radius: 3px;}
-  .timeline-item { position: relative; padding-bottom: 48px; }
-  .timeline-item:last-child { padding-bottom: 0; }
-  .timeline-dot { position: absolute; left: -32px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--amber); z-index: 2; transition: 0.3s; }
-  .timeline-item:hover .timeline-dot { background: var(--amber); box-shadow: 0 0 0 4px rgba(240, 169, 58, 0.2); }
-  .timeline-content { padding-left: 24px; }
-  .timeline-content h3 { font-size: 20px; color: var(--forest); margin-bottom: 10px; display:flex; align-items:center; gap:12px; }
-  .timeline-content h3 span { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--concrete); font-weight: 500; }
-  .timeline-content p { font-size: 15px; color: #4A5148; line-height: 1.6; max-width: 600px;}
+  /* ---------- PROCESS CARDS ---------- */
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 56px; }
+  @media(max-width:900px){ .process-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media(max-width:560px){ .process-grid { grid-template-columns: 1fr; } }
+  .process-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+    border: 1px solid rgba(17,42,34,0.04);
+  }
+  .process-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+  }
+  .process-card-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 110px;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(240, 169, 58, 0.08);
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    transition: color 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+  }
+  .process-card:hover .process-card-num {
+    color: rgba(240, 169, 58, 0.25);
+    transform: scale(1.05) translate(-5px, 5px);
+  }
+  .process-card h3 { font-size: 22px; color: var(--forest); margin-bottom: 12px; position:relative; z-index:2; }
+  .process-card p { font-size: 15.5px; color: #4A5148; line-height: 1.6; position:relative; z-index:2; }
   
   /* Parallax and Hover extras */
   .hero-photo { background-size: cover; background-position: center; } /* Simple parallax */
@@ -825,34 +850,26 @@
       <h2>From first call to teardown</h2>
       <p>A straightforward process built around your project timeline, not ours.</p>
     </div>
-    <div class="process-timeline reveal">
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-content">
-          <h3><span>01 /</span> We assess the space</h3>
-          <p>A quick site visit or photo review to understand layout, ICRA/code requirements, and access constraints. We identify potential hurdles before we ever set foot on site for installation.</p>
-        </div>
+    <div class="process-grid">
+      <div class="process-card reveal">
+        <div class="process-card-num">01</div>
+        <h3>Assess the space</h3>
+        <p>A quick site visit or photo review to understand layout, ICRA/code requirements, and access constraints before installation.</p>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-content">
-          <h3><span>02 /</span> You get a fixed quote</h3>
-          <p>A specific configuration and fixed price built around your exact footprint and timeline — no generic packages or surprise upcharges later.</p>
-        </div>
+      <div class="process-card reveal" style="transition-delay: 0.1s;">
+        <div class="process-card-num">02</div>
+        <h3>Fixed price quote</h3>
+        <p>A specific configuration and fixed price built around your exact footprint and timeline — no generic packages or surprise upcharges.</p>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-content">
-          <h3><span>03 /</span> Walls go up in hours</h3>
-          <p>Our experienced crew installs the system precisely on your schedule, including nights and weekends when needed to avoid disrupting daytime facility operations.</p>
-        </div>
+      <div class="process-card reveal" style="transition-delay: 0.2s;">
+        <div class="process-card-num">03</div>
+        <h3>Walls go up</h3>
+        <p>Our experienced crew installs the system precisely on your schedule, including nights and weekends to avoid disrupting operations.</p>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-content">
-          <h3><span>04 /</span> We dismantle, you move on</h3>
-          <p>When the project wraps, panels are quickly broken down and removed without a trace. They are 100% reusable, leaving zero landfill waste behind.</p>
-        </div>
+      <div class="process-card reveal" style="transition-delay: 0.3s;">
+        <div class="process-card-num">04</div>
+        <h3>Clean teardown</h3>
+        <p>When the project wraps, panels are quickly broken down and removed without a trace. Zero landfill waste left behind.</p>
       </div>
     </div>
   </div>
